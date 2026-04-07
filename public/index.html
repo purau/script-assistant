@@ -163,12 +163,10 @@ async function send(){
   history.push({role:'user',content:text});
   const thinking=addMsg('assistant','',true);
   try{
-    const res=await fetch('https://corsproxy.io/?https://api.anthropic.com/v1/messages',{
+    const res=await fetch('/chat',{
       method:'POST',
       headers:{
-        'Content-Type':'application/json',
-        'x-api-key':'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',
-        'anthropic-version':'2023-06-01'
+        'Content-Type':'application/json'
       },
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,system:getSystem(),messages:history})
     });
