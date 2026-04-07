@@ -82,7 +82,7 @@ ACNE TYPES: Hormonal, cystic, adult, puberty, post-pill, chin/jawline, back acne
 AUDIENCE: Female 80%, 18-35. Frustrated. Tried everything: cleansers, antibiotics, the pill, facials, dermatologists. Thinks Accutane might be the only option left.
 OBJECTIONS: Price. Skepticism. Tried everything. Don't want to wait 90 days. Been let down before.
 BUYING TRIGGERS: Before/after results. Gut-skin education. 100% natural. 90-day guarantee. Channel 7 news. 50,000 Australians.
-ACCUTANE ANGLE: Affects entire body — dry lips, dry skin all over, dry eyes, dehydration, headaches, sun sensitivity. PuraU = no side effects, natural, treats root cause.
+ACCUTANE ANGLE: Affects entire body - dry lips, dry skin all over, dry eyes, dehydration, headaches, sun sensitivity. PuraU = no side effects, natural, treats root cause.
 7 NEWS ANGLE: Channel 7 segment blew them up overnight. Founder discovered gut-skin connection. 50,000 Australians later.
 NEVER SAY: cure.`,
 gutfibre:`ACTIVE PRODUCT: PuraU Gut Fibre
@@ -102,14 +102,14 @@ const SYSTEM=`You are a high-performance UGC script assistant for PuraU, an Aust
 
 CORE RULES:
 - Ad = Rational + Emotional + Trust
-- Make them FEEL the human moment — don't just state the problem
+- Make them FEEL the human moment - don't just state the problem
 - Always reframe: acne/gut issues are internal root cause, not surface problems
 - Trust fast: 50,000+ Australians, 5-star Trustpilot, microbiologist-formulated
 - 90-day money-back guarantee always in CTA
 - NEVER say "cure"
 - Write how people actually talk on camera
 
-SCRIPT ORDER: Hook → Diagnosis → Reframe → Proof → CTA
+SCRIPT ORDER: Hook -> Diagnosis -> Reframe -> Proof -> CTA
 LENGTH: TikTok = 60-90 words. Facebook = 90-150 words.
 
 FORMATS: Personal UGC testimonial, Founder/7 News, POV series, Gut-skin lesson, Podcast/Accutane chat, Mum testimonial, Expert edutainment, Dermatologist reacts.
@@ -119,7 +119,7 @@ PROVEN HOOKS:
 "Your acne has nothing to do with your skin"
 "POV: you have hormonal acne"
 "94% of customers see a SIGNIFICANT reduction in 90 days"
-"So if nothing has worked for you, it's probably not your skin — it's your gut"
+"So if nothing has worked for you, it's probably not your skin - it's your gut"
 "PSA: Acne doesn't start on your skin, it starts in your gut"
 "5 years ago we were on the news and this video blew us up overnight"
 
@@ -168,7 +168,7 @@ async function send(){
       headers:{
         'Content-Type':'application/json'
       },
-      body:JSON.stringify({model:'claude-sonnet-4-20250514'',max_tokens:1500,system:getSystem(),messages:history})
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,system:getSystem(),messages:history})
     });
     const data=await res.json();
     const reply=data.content?.[0]?.text||'Something went wrong. Please try again.';
