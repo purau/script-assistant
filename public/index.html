@@ -170,10 +170,6 @@ function setProduct(p,btn){
   currentProduct=p;
   document.querySelectorAll('.prod-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  history=[];
-  document.getElementById('messages').innerHTML='';
-  const names={acne:'Acne Program',gutfibre:'Gut Fibre',gutglow:'GutGlow Collagen'};
-  addMsg('assistant','Switched to '+names[p]+'. What are you scripting?');
   saveToStorage();
 }
 
