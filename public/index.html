@@ -38,7 +38,10 @@ textarea::placeholder{color:var(--muted)}
 #sendbtn{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:9px 18px;border-radius:var(--radius-sm);border:none;background:var(--accent);color:#fff;cursor:pointer;height:40px;transition:opacity 0.15s;white-space:nowrap}
 #sendbtn:hover{opacity:0.88}
 #sendbtn:disabled{opacity:0.4;cursor:not-allowed}
-.footer-note{text-align:center;font-size:11px;color:var(--muted);margin-top:12px}
+.footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:0 2px}
+.footer-note{font-size:11px;color:var(--muted)}
+.clear-btn{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:20px;padding:4px 10px;cursor:pointer;transition:all 0.15s}
+.clear-btn:hover{border-color:#c0392b;color:#c0392b}
 </style>
 </head>
 <body>
@@ -53,9 +56,7 @@ textarea::placeholder{color:var(--muted)}
     <button class="prod-btn" onclick="setProduct('gutglow',this)">GutGlow Collagen</button>
   </div>
   <div class="chat-window">
-    <div id="messages">
-      <div class="msg assistant">Hey! I'm your PuraU script assistant — trained on your products, audiences, winning ad frameworks and real scripts. Select your product above, tell me what you're making, and I'll write it. Or tap a quick start below.</div>
-    </div>
+    <div id="messages"></div>
     <div class="chips-area">
       <div class="chip" onclick="quickstart('Write 5 hook variations for the Acne Program targeting frustrated women who have tried everything')">5 hook ideas</div>
       <div class="chip" onclick="quickstart('Write a full 30-second UGC script using the gut-skin connection angle for Facebook')">Full script</div>
@@ -68,11 +69,15 @@ textarea::placeholder{color:var(--muted)}
       <button id="sendbtn" onclick="send()">Send</button>
     </div>
   </div>
-  <p class="footer-note">Powered by Claude · Chats are private and not saved</p>
+  <div class="footer-row">
+    <span class="footer-note">Powered by Claude · Chats are private and not saved</span>
+    <button class="clear-btn" onclick="clearHistory()">Clear chat history</button>
+  </div>
 </div>
 <script>
 let currentProduct='acne';
 let history=[];
+
 const PRODUCTS={
 acne:`ACTIVE PRODUCT: PuraU Advanced Acne Program
 MECHANISM: Damaged gut lining creates gaps. Toxins leak into bloodstream. Immune system triggers inflammation. Skin pushes inflammation out as acne. Fix the gut = fix the skin.
@@ -129,6 +134,38 @@ Always label HOOK: / BODY: / CTA: and give 3 hook variations after every full sc
 
 function getSystem(){return SYSTEM.replace('{PRODUCT}',PRODUCTS[currentProduct]);}
 
+function saveToStorage(){
+  localStorage.setItem('purau_product',currentProduct);
+  localStorage.setItem('purau_history',JSON.stringify(history));
+}
+
+function loadFromStorage(){
+  const savedProduct=localStorage.getItem('purau_product');
+  const savedHistory=localStorage.getItem('purau_history');
+  if(savedProduct){
+    currentProduct=savedProduct;
+    document.querySelectorAll('.prod-btn').forEach(b=>b.classList.remove('active'));
+    const idx={acne:0,gutfibre:1,gutglow:2}[currentProduct];
+    document.querySelectorAll('.prod-btn')[idx].classList.add('active');
+  }
+  if(savedHistory){
+    history=JSON.parse(savedHistory);
+    history.forEach(m=>addMsg(m.role,m.content));
+  }
+  if(!savedHistory||history.length===0){
+    addMsg('assistant','Hey! I\'m your PuraU script assistant - trained on your products, audiences, winning ad frameworks and real scripts. Select your product above, tell me what you\'re making, and I\'ll write it. Or tap a quick start below.');
+  }
+}
+
+function clearHistory(){
+  if(!confirm('Clear all chat history?'))return;
+  history=[];
+  localStorage.removeItem('purau_history');
+  localStorage.removeItem('purau_product');
+  document.getElementById('messages').innerHTML='';
+  addMsg('assistant','Chat cleared! What would you like to script?');
+}
+
 function setProduct(p,btn){
   currentProduct=p;
   document.querySelectorAll('.prod-btn').forEach(b=>b.classList.remove('active'));
@@ -137,6 +174,7 @@ function setProduct(p,btn){
   document.getElementById('messages').innerHTML='';
   const names={acne:'Acne Program',gutfibre:'Gut Fibre',gutglow:'GutGlow Collagen'};
   addMsg('assistant','Switched to '+names[p]+'. What are you scripting?');
+  saveToStorage();
 }
 
 function addMsg(role,text,thinking=false){
@@ -165,9 +203,7 @@ async function send(){
   try{
     const res=await fetch('/chat',{
       method:'POST',
-      headers:{
-        'Content-Type':'application/json'
-      },
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,system:getSystem(),messages:history})
     });
     const data=await res.json();
@@ -175,6 +211,7 @@ async function send(){
     thinking.remove();
     addMsg('assistant',reply);
     history.push({role:'assistant',content:reply});
+    saveToStorage();
   }catch(e){
     thinking.remove();
     addMsg('assistant','Something went wrong. Please try again.');
@@ -182,6 +219,8 @@ async function send(){
   btn.disabled=false;
   document.getElementById('userinput').focus();
 }
+
+window.addEventListener('load',loadFromStorage);
 </script>
 </body>
 </html>
