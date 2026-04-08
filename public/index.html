@@ -58,7 +58,7 @@ textarea::placeholder{color:var(--muted)}
   <div class="chat-window">
     <div id="messages"></div>
     <div class="chips-area">
-      <div class="chip" onclick="quickstart('I want to create a script but not sure where to start. Ask me a few questions about my story, audience and angle so you can write something personal and unique to me.')">Help me start</div>
+      <div class="chip" onclick="quickstart('I want to create a script but not sure where to start. Ask me a few questions about my story, style and what persona we are targeting so you can write something personal and unique to me.')">Help me start</div>
       <div class="chip" onclick="quickstart('Give me 5 very different hook ideas for this product. Make each one a completely different angle, emotion and format so I have real variety to choose from.')">Hook ideas</div>
       <div class="chip" onclick="quickstart('Suggest 5 fresh angles for this product I probably have not tried yet. Think outside the obvious and give me angles that would stop someone mid-scroll.')">Suggest angles</div>
       <div class="chip" onclick="quickstart('What are the best performing script formats for this product and why? Give me a quick breakdown with an example hook for each.')">What formats work?</div>
@@ -157,7 +157,7 @@ function renderMessages(){
   msgs.innerHTML='';
   const h=histories[currentProduct];
   if(h.length===0){
-    addMsg('assistant','Hey! I\'m your PuraU script assistant - trained on your products, audiences, winning ad frameworks and real scripts. Select your product above, tell me what you\'re making, and I\'ll write it. Or tap a quick start below.');
+    addMsg('assistant','Hey! I\'m your PuraU script assistant — trained on your products, audiences and winning ad frameworks. To get scripts that are unique to YOU, tap Help me start and I\'ll ask you a few quick questions about your story and style. Or if you know what you want, just type it below.');
   } else {
     h.forEach(m=>addMsg(m.role,m.content));
   }
