@@ -17,7 +17,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;disp
 .prod-btn{font-family:'DM Sans',sans-serif;font-size:12px;padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 0.15s}
 .prod-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
 .prod-btn:hover:not(.active){border-color:var(--accent);color:var(--accent)}
-.chat-window{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;height:560px}
+.inspiration-bar{margin-bottom:12px;display:flex;gap:8px;align-items:center}
+.inspiration-bar input{flex:1;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;outline:none;transition:border-color 0.15s}
+.inspiration-bar input:focus{border-color:var(--accent)}
+.inspiration-bar input::placeholder{color:var(--muted)}
+.inspiration-bar button{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:8px 14px;border-radius:var(--radius-sm);border:1px solid var(--accent);background:var(--accent-light);color:var(--accent);cursor:pointer;white-space:nowrap;transition:all 0.15s}
+.inspiration-bar button:hover{background:var(--accent);color:#fff}
+.chat-window{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;height:520px}
 #messages{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
 #messages::-webkit-scrollbar{width:4px}
 #messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
@@ -54,6 +60,10 @@ textarea::placeholder{color:var(--muted)}
     <button class="prod-btn active" onclick="setProduct('acne',this)">Acne Program</button>
     <button class="prod-btn" onclick="setProduct('gutfibre',this)">Gut Fibre</button>
     <button class="prod-btn" onclick="setProduct('gutglow',this)">GutGlow Collagen</button>
+  </div>
+  <div class="inspiration-bar">
+    <input type="text" id="inspirationInput" placeholder="Paste a winning ad, hook or concept you love and I'll rework it for PuraU..."/>
+    <button onclick="useInspiration()">Use as inspiration</button>
   </div>
   <div class="chat-window">
     <div id="messages"></div>
@@ -187,6 +197,16 @@ function addMsg(role,text,thinking=false){
   msgs.appendChild(d);
   msgs.scrollTop=msgs.scrollHeight;
   return d;
+}
+
+function useInspiration(){
+  const input=document.getElementById('inspirationInput');
+  const text=input.value.trim();
+  if(!text)return;
+  const prompt='Here is a winning ad concept I love. Please analyse what makes it work — the hook style, emotional trigger, format and structure — then rework it into a completely new, original version for PuraU. Keep the same energy and persuasion mechanics but make it 100% unique and on-brand for PuraU. Here is the inspiration:\n\n'+text;
+  input.value='';
+  document.getElementById('userinput').value=prompt;
+  send();
 }
 
 function quickstart(text){document.getElementById('userinput').value=text;send();}
