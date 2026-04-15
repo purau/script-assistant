@@ -78,7 +78,7 @@ textarea::placeholder{color:var(--muted)}
   <div class="chat-window">
     <div id="messages"></div>
     <div class="chips-area">
-      <div class="chip" onclick="quickstart('I want to create a script but not sure where to start. Ask me a few questions about my story, style and what persona we are targeting so you can write something personal and unique to me.')">Help me start</div>
+      <div class="chip" onclick="helpMeStart()">Help me start</div>
       <div class="chip" onclick="quickstart('Give me 5 very different hook ideas for this product. Make each one a completely different angle, emotion and format so I have real variety to choose from.')">Hook ideas</div>
       <div class="chip" onclick="quickstart('Suggest 5 fresh angles for this product I probably have not tried yet. Think outside the obvious and give me angles that would stop someone mid-scroll.')">Suggest angles</div>
       <div class="chip" onclick="quickstart('What are the best performing script formats for this product and why? Give me a quick breakdown with an example hook for each.')">What formats work?</div>
@@ -135,6 +135,7 @@ CORE RULES:
 - NEVER say "cure" or "no side effects"
 - Use "100% natural" instead of "no side effects"
 - Write how people actually talk on camera
+- Scripts are always for Meta and TikTok — write a TikTok version (60-90 words) and a Meta version (90-150 words) for every script
 
 COMPLIANCE RULES - FOLLOW STRICTLY:
 - Never tell someone to stop taking any medicine or choose PuraU over any listed medicine
@@ -145,7 +146,6 @@ COMPLIANCE RULES - FOLLOW STRICTLY:
 - Never imply PuraU is safer than or superior to any listed medicine
 
 SCRIPT ORDER: Hook -> Diagnosis -> Reframe -> Proof -> CTA
-LENGTH: TikTok = 60-90 words. Facebook = 90-150 words.
 
 FORMATS: Personal UGC testimonial, Founder/7 News, POV series, Gut-skin lesson, Podcast/Accutane chat, Mum testimonial, Expert edutainment, Dermatologist reacts.
 
@@ -217,6 +217,12 @@ function addMsg(role,text,thinking=false){
   msgs.appendChild(d);
   msgs.scrollTop=msgs.scrollHeight;
   return d;
+}
+
+function helpMeStart(){
+  const prompt='I want to create a script and need your help. Please ask me these 3 questions one at a time and wait for my answers before writing anything:\n\n1. Have you personally used this product? What was your experience or result?\n2. How do you want to film it? Green-screen? In the car? Kitchen? Bathroom? Walking? Tell me.\n3. Who are we targeting? Describe the persona — who is this person, what is their problem, what have they already tried?\n\nOnce I answer all 3, write me a TikTok version and a Meta version of the script.';
+  document.getElementById('userinput').value=prompt;
+  send();
 }
 
 function useInspiration(){
